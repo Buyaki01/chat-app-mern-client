@@ -1,9 +1,11 @@
 import axios from 'axios'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
+import { UserContext } from '../UserContext'
 
 const Register = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const { setUsername: setLoggedInUsername } = useContext(UserContext)
 
   const registerUser = async (e) => {
     e.preventDefault()
