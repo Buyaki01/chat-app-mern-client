@@ -3,7 +3,7 @@ import './App.css'
 import RegisterAndLoginForm from './components/RegisterAndLoginForm'
 import { UserContext } from './UserContext'
 import { useContext } from 'react'
-import HomePage from './components/HomePage'
+import ChatPage from './components/Chat'
 
 function App() {
   axios.defaults.baseURL = 'http://localhost:5000'
@@ -14,7 +14,7 @@ function App() {
   return (
     <>
       {username ? (
-        <HomePage username={username} />
+        <ChatPage username={username} />
       ) : (
         <RegisterAndLoginForm />
       )}
