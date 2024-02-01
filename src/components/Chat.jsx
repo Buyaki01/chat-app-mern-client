@@ -1,4 +1,10 @@
+import { useEffect } from "react"
+
 const ChatPage = () => {
+  useEffect(() => {
+    new WebSocket('ws://localhost:5000')
+  }, [])
+
   return (
     <div className="flex h-screen">
       <div className="w-1/3">
