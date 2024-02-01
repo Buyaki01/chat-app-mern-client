@@ -1,6 +1,6 @@
 import axios from 'axios'
 import './App.css'
-import Register from './components/Register'
+import RegisterAndLoginForm from './components/RegisterAndLoginForm'
 import { UserContext } from './UserContext'
 import { useContext } from 'react'
 
@@ -10,17 +10,13 @@ function App() {
 
   const {username} = useContext(UserContext)
 
-  if (username === null) {
-    return 'Loading...'
-  }
-
   if (username) {
     return `${username} Logged in!`
   }
 
   return (
     <>
-      <Register />
+      <RegisterAndLoginForm />
     </>
   )
 }

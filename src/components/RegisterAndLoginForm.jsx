@@ -2,20 +2,22 @@ import axios from 'axios'
 import { useContext, useState } from 'react'
 import { UserContext } from '../UserContext'
 
-const Register = () => {
+const RegisterAndLoginForm = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [isLoginOrRegister, setIsLoginOrRegister] = useState('register')
   const { setUsername: setLoggedInUsername } = useContext(UserContext)
 
-  const registerUser = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    await axios.post('/register', { username, password })
+    const url = isLoginOrRegister === 'register' ? 'register' : 'login'
+    await axios.post(url, { username, password })
   }
 
   return (
     <div className='h-screen flex items-center justify-center'>
       <div className='shadow-2xl p-4'>
-        <form className='w-72 mx-auto' onSubmit={registerUser}>
+        <form className='w-72 mx-auto' onSubmit={handleSubmit}>
           <input 
             type='text' 
             placeholder='username' 
@@ -33,12 +35,28 @@ const Register = () => {
           <button
             className='bg-primary text-white block w-full rounded-sm p-2'
           >
-            Register
+            {isLoginOrRegister === 'register' ? 'Register' : 'Login'}
           </button>
+
+          <div className='text-center mt-2'>
+            {isLoginOrRegister === 'register' && (
+              <div>
+                Already a member? 
+                <button className='ml-2 text-primary hover:underline' onClick={() => setIsLoginOrRegister('login')}> Login here</button>
+              </div>
+            )}
+
+            {isLoginOrRegister === 'login' && (
+              <div>
+                Have no account? 
+                <button className='ml-2 text-primary hover:underline' onClick={() => setIsLoginOrRegister('register')}> Register here</button>
+              </div>
+            )}
+          </div>
         </form>
       </div>
     </div>
   )
 }
 
-export default Register
+export default RegisterAndLoginForm
