@@ -1,8 +1,9 @@
 import axios from 'axios'
 import './App.css'
-import Register from './components/Register'
+import RegisterAndLoginForm from './components/RegisterAndLoginForm'
 import { UserContext } from './UserContext'
 import { useContext } from 'react'
+import HomePage from './components/HomePage'
 
 function App() {
   axios.defaults.baseURL = 'http://localhost:5000'
@@ -10,17 +11,13 @@ function App() {
 
   const {username} = useContext(UserContext)
 
-  if (username === null) {
-    return 'Loading...'
-  }
-
-  if (username) {
-    return `${username} Logged in!`
-  }
-
   return (
     <>
-      <Register />
+      {username ? (
+        <HomePage username={username} />
+      ) : (
+        <RegisterAndLoginForm />
+      )}
     </>
   )
 }
