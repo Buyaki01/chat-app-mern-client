@@ -33,7 +33,7 @@ const RegisterAndLoginForm = () => {
             onChange={e => setPassword(e.target.value)}
           />
           <button
-            className='bg-primary text-white block w-full rounded-sm p-2'
+            className='bg-secondary text-white block w-full rounded-sm p-2'
           >
             {isLoginOrRegister === 'register' ? 'Register' : 'Login'}
           </button>
@@ -42,14 +42,14 @@ const RegisterAndLoginForm = () => {
             {isLoginOrRegister === 'register' && (
               <div>
                 Already a member? 
-                <button className='ml-2 text-primary hover:underline' onClick={() => setIsLoginOrRegister('login')}> Login here</button>
+                <button className='ml-2 text-secondary hover:underline' onClick={() => setIsLoginOrRegister('login')}> Login here</button>
               </div>
             )}
 
             {isLoginOrRegister === 'login' && (
               <div>
                 Have no account? 
-                <button className='ml-2 text-primary hover:underline' onClick={() => setIsLoginOrRegister('register')}> Register</button>
+                <button className='ml-2 text-secondary hover:underline' onClick={() => setIsLoginOrRegister('register')}> Register</button>
               </div>
             )}
           </div>
