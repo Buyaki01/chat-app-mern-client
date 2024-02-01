@@ -49,7 +49,7 @@ const RegisterAndLoginForm = () => {
             {isLoginOrRegister === 'login' && (
               <div>
                 Have no account? 
-                <button className='ml-2 text-primary hover:underline' onClick={() => setIsLoginOrRegister('register')}> Register here</button>
+                <button className='ml-2 text-primary hover:underline' onClick={() => setIsLoginOrRegister('register')}> Register</button>
               </div>
             )}
           </div>
