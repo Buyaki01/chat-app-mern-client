@@ -43,12 +43,12 @@ const ChatPage = () => {
         {onlinePeople.map((person) => (
           <div 
             key={person.username}
-            className="border-b border-gray-100 py-2 flex gap-2 items-center"
+            className="border-b border-gray-100 py-2 flex gap-2 items-center cursor-pointer"
           >
             <div className="w-8 h-8 bg-secondary text-white rounded-full flex items-center justify-center">
               {person.username[0]}
             </div>
-            <span>{person.username}</span>
+            <span className="opacity-70">{person.username}</span>
           </div>
         ))}
       </div>
