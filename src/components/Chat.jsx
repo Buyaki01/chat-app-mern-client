@@ -22,7 +22,6 @@ const ChatPage = () => {
 
   const handleMessage = (e) => {
     const messageData = JSON.parse(e.data)
-    console.log(messageData)
     if (messageData?.online) {
       showOnlinePeople(messageData.online)
     }
@@ -34,8 +33,6 @@ const ChatPage = () => {
     wsServerUrl.addEventListener('message', handleMessage)
   }, [])
 
-  const loggedInUser = () => onlinePeople.find(owner => owner.username === username)
-
   return (
     <div className="flex h-screen">
       <div className="bg-white w-1/3">
@@ -45,7 +42,7 @@ const ChatPage = () => {
           </svg>
           Chat App
         </div>
-        {onlinePeople.map((person) => (
+        {onlinePeople.filter(person => person.username !== username).map((person) => (
           <div 
             key={person.username}
             onClick={() => setSelectedUsername(person.username)}
@@ -59,7 +56,14 @@ const ChatPage = () => {
         ))}
       </div>
       <div className="flex flex-col bg-secondary w-2/3 p-2">
-        <div className="flex-grow">messages with selected persons</div>
+        <div className={`flex-grow ${!selectedUsername ? 'flex items-center justify-center': '' }`}>
+          {!selectedUsername && (
+            <div className="text-white text-lg font-semibold italic whitespace-nowrap">
+              &larr; Please select a person from the sidebar
+            </div>
+          )}
+        </div>
+
         <div className="flex">
           <input
             type="text"
