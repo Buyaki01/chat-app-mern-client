@@ -20,10 +20,11 @@ const RegisterAndLoginForm = () => {
         <form className='w-72 mx-auto' onSubmit={handleSubmit}>
           <input 
             type='text' 
-            placeholder='username' 
+            placeholder='username'
             className='block w-full rounded-sm p-2 mb-2 border'
             value={username}
             onChange={e => setUsername(e.target.value)}
+            autoComplete="off"
           />
           <input 
             type='password' 
@@ -31,6 +32,7 @@ const RegisterAndLoginForm = () => {
             className='block w-full rounded-sm p-2 mb-2 border'
             value={password}
             onChange={e => setPassword(e.target.value)}
+            autoComplete="off"
           />
           <button
             className='bg-secondary text-white block w-full rounded-sm p-2'
