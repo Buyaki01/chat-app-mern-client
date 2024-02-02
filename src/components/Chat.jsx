@@ -2,6 +2,28 @@ import { useEffect, useState } from "react"
 
 const ChatPage = () => {
   const [ws, setWs] = useState(null)
+  const [onlinePeople, setOnlinePeople] = useState([])
+
+  const showOnlinePeople = (peopleArray) => {
+    const uniqueUsernames = new Set()
+    const uniquePeopleArray = peopleArray.filter(person => {
+      if (uniqueUsernames.has(person.username)) {
+        return false // Skip, as it's a duplicate
+      }
+      uniqueUsernames.add(person.username)
+      return true
+    })
+
+    setOnlinePeople(uniquePeopleArray)
+  }
+
+  const handleMessage = (e) => {
+    const messageData = JSON.parse(e.data)
+    console.log(messageData)
+    if (messageData?.online) {
+      showOnlinePeople(messageData.online)
+    }
+  }
 
   useEffect(() => {
     const wsServerUrl = new WebSocket('ws://localhost:5000')
@@ -9,14 +31,12 @@ const ChatPage = () => {
     wsServerUrl.addEventListener('message', handleMessage)
   }, [])
 
-  const handleMessage = (e) => {
-    console.log('new message: ', e)
-  }
-
   return (
     <div className="flex h-screen">
       <div className="w-1/3">
-        contacts
+        {onlinePeople.map((person) => (
+          <div key={person.username}>{person.username}</div>
+        ))}
       </div>
       <div className="flex flex-col bg-secondary w-2/3 p-2">
         <div className="flex-grow">messages with selected persons</div>
