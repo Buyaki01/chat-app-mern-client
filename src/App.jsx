@@ -5,9 +5,10 @@ import { UserContext } from './UserContext'
 import { useContext } from 'react'
 import ChatPage from './components/Chat'
 
+axios.defaults.baseURL = 'http://localhost:5000'
+axios.defaults.withCredentials = true
+
 function App() {
-  axios.defaults.baseURL = 'http://localhost:5000'
-  axios.defaults.withCredentials = true
 
   const {username} = useContext(UserContext)
 

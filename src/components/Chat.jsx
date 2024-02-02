@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
+import { UserContext } from "../UserContext"
 
 const ChatPage = () => {
   const [ws, setWs] = useState(null)
   const [onlinePeople, setOnlinePeople] = useState([])
   const [selectedUsername, setSelectedUsername] = useState(null)
+  const { username } = useContext(UserContext)
 
   const showOnlinePeople = (peopleArray) => {
     const uniqueUsernames = new Set()
@@ -31,6 +33,8 @@ const ChatPage = () => {
     setWs(wsServerUrl)
     wsServerUrl.addEventListener('message', handleMessage)
   }, [])
+
+  const loggedInUser = () => onlinePeople.find(owner => owner.username === username)
 
   return (
     <div className="flex h-screen">
