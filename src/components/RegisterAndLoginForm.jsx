@@ -6,12 +6,15 @@ const RegisterAndLoginForm = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [isLoginOrRegister, setIsLoginOrRegister] = useState('register')
-  const { setUsername: setLoggedInUsername } = useContext(UserContext)
+  const { setUsername: setLoggedInUsername } = useContext(UserContext) 
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     const url = isLoginOrRegister === 'register' ? 'register' : 'login'
-    await axios.post(url, { username, password })
+    const response = await axios.post(url, { username, password })
+    if (response.status === 201) {
+      setLoggedInUsername(username)
+    }
   }
 
   return (

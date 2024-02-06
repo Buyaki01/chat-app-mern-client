@@ -5,6 +5,8 @@ const ChatPage = () => {
   const [ws, setWs] = useState(null)
   const [onlinePeople, setOnlinePeople] = useState([])
   const [selectedUsername, setSelectedUsername] = useState(null)
+  const [newMessageText, setNewMessageText] = useState(null)
+  const [messages, setMessages] = useState([])
   const { username } = useContext(UserContext)
 
   const showOnlinePeople = (peopleArray) => {
@@ -20,18 +22,33 @@ const ChatPage = () => {
     setOnlinePeople(uniquePeopleArray)
   }
 
-  const handleMessage = (e) => {
+  const handleOnlineUsers = (e) => {
     const messageData = JSON.parse(e.data)
+    console.log("This is the event: ", e)
+    console.log("This is the messageData: ", messageData)
     if (messageData?.online) {
       showOnlinePeople(messageData.online)
+    } else {
+      //Handles incoming messages
+      setMessages(prev => ([...prev, {isOur:false, text: messageData.text}]))
     }
   }
 
   useEffect(() => {
     const wsServerUrl = new WebSocket('ws://localhost:5000')
     setWs(wsServerUrl)
-    wsServerUrl.addEventListener('message', handleMessage)
+    wsServerUrl.addEventListener('message', handleOnlineUsers)
   }, [])
+
+  const handleSendMessage = (e) => {
+    e.preventDefault()
+    ws.send(JSON.stringify({
+      recipient: selectedUsername,
+      text: newMessageText,
+    }))
+    setNewMessageText('')
+    setMessages(prev => ([...prev, {text: newMessageText, isOur:true }]))
+  }
 
   return (
     <div className="flex h-screen">
@@ -62,21 +79,35 @@ const ChatPage = () => {
               &larr; Please select a person from the sidebar
             </div>
           )}
+
+          {!!selectedUsername && (
+            <div>
+              {messages.map(message => (
+                <div>
+                  {message.text}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
-        <div className="flex">
-          <input
-            type="text"
-            placeholder="Type your message here"
-            className="bg-white flex-grow border rounded-sm p-2"
-          />
+        {!!selectedUsername && (
+          <form className="flex" onSubmit={handleSendMessage}>
+            <input
+              type="text"
+              placeholder="Type your message here"
+              className="bg-white flex-grow border rounded-sm p-2"
+              value={newMessageText}
+              onChange={e => setNewMessageText(e.target.value)}
+            />
 
-          <button className="bg-lime-600 p-2 text-white rounded-sm">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
-            </svg>
-          </button>
-        </div>
+            <button type="submit" className="bg-lime-600 p-2 text-white rounded-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
+              </svg>
+            </button>
+          </form>
+        )}
       </div>
     </div>
   )
